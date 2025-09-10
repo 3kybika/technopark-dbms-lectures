@@ -810,50 +810,58 @@ WHERE i.res_id = t.res_id;
 
 <section class="slide">
     <h2>Массовая вставка данных</h2>
-    <p>Решение «в лоб»:</p>
-    <pre style="font-size: 85%"><code class="java">String sql = "INSERT INTO foo (name, description) VALUES (?, ?)";
-try (PreparedStatement ps = db.prepareStatement(sql)) {
+    <p>Решение «в лоб» (11.4 с):</p>
+    <pre style="font-size: 70%"><code class="go">sql := `INSERT INTO foo (name, description) VALUES ($1, $2) RETURNING id`
 
-    for (int i = 0; i < 100; ++i) {
-        ps.setString(1, "name-" + i);
-        ps.setString(2, "description-" + i);
-        ps.execute();
-    }
-
+for i := 0; i < int(1e5); i++ {
+    name := fmt.Sprintf("name-%d", i)
+    description := fmt.Sprintf("description-%d", i)
+    row := conn.QueryRow(ctx, sql, name, description)
+    var id int
+    row.Scan(&id)
 }
+
 </code></pre>
 </section>
 
 <section class="slide">
     <h2>Массовая вставка данных</h2>
-    <p>Более производительное решение:</p>
-    <pre style="font-size: 85%"><code class="java">String sql = "INSERT INTO foo (name, description) VALUES (?, ?)";
-try (PreparedStatement ps = db.prepareStatement(sql)) {
+    <p>Более производительное решение (3.6 с):</p>
+    <pre style="font-size: 70%"><code class="go">batch := &pgx.Batch{}
+sql := `INSERT INTO foo (name, description) VALUES ($1, $2) RETURNING id`
 
-    for (int i = 0; i < 100; ++i) {
-        ps.setString(1, "name-" + i);
-        ps.setString(2, "description-" + i);
-        ps.addBatch();
-    }
-    ps.executeBatch();
+for i := 0; i < int(1e5); i++ {
+    name := fmt.Sprintf("name-%d", i)
+    description := fmt.Sprintf("description-%d", i)
+    batch.Queue(sql, name, description)
 }
+
+br := conn.SendBatch(ctx, batch)
+br.Close()
+for i := 0; i < int(1e5); i++ {
+    var id int
+    br.QueryRow().Scan(&id)
+}
+
 </code></pre>
     <img class="next" src="slowpoke.svg" style="position: absolute; right: 50px; bottom: 50px; width: 300px"/>
 </section>
 
 <section class="slide">
     <h2>Массовая вставка данных</h2>
-    <p>Решение без покемонов:</p>
-    <pre style="font-size: 85%"><code class="java">String sql = "INSERT INTO foo (name, description) VALUES (?, ?)";
-try (PreparedStatement ps = db.prepareStatement(sql,
-        Statement.NO_GENERATED_KEYS)) {
-    for (int i = 0; i < 100; ++i) {
-        ps.setString(1, "name-" + i);
-        ps.setString(2, "description-" + i);
-        ps.addBatch();
-    }
-    ps.executeBatch();
+    <p>Не запрашивать результат запроса (1.3 с):</p>
+    <pre style="font-size: 70%"><code class="go">batch := &pgx.Batch{}
+sql := `INSERT INTO foo (name, description) VALUES ($1, $2) RETURNING id`
+
+for i := 0; i < int(1e5); i++ {
+	name := fmt.Sprintf("name-%d", i)
+	description := fmt.Sprintf("description-%d", i)
+	batch.Queue(sql, name, description)
 }
+
+br := conn.SendBatch(ctx, batch)
+br.Close()
+
 </code></pre>
 </section>
 

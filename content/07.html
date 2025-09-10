@@ -357,6 +357,20 @@ description: |
 </section>
 
 <section class="slide">
+    <h2>Стемизация</h2>
+    <p><dfn>Стемизация</dfn> - преобразование фрагмента, при котором из слова удаляется его форма.</p>
+    <p><code>{'Мама', 'мыла', 'раму'} -> {'мама', 'мыть', 'рама'}</code></p>
+    <p>Стемизаторы бывают двух видов:
+        <ul>
+            <li>Алгоритмические (Snowball, NLTK) - работают на основе эвристик;</li>
+            <li>Словарные (ispell) - работают на основе словаря. В зависимости от полноты
+                и качества словаря могут быть или лучше, или хуже алгоритмического.
+            </li>
+        </ul>
+    </p>
+</section>
+
+<section class="slide">
     <h2>Словари в PostgreSQL</h2>
     <p>Создавая словари, можно:</p>
     <ul>
@@ -508,6 +522,47 @@ SET fts = setweight(to_tsvector(title), 'A')
 
 </code><code class="sql">SELECT * FROM documents WHERE fts @@ to_tsquery('модем');
 </code></pre>
+</section>
+
+<section class="slide">
+    <h2>Нечёткий поиск</h2>
+    <p>Не всегда пользователь вводит текст без опечаток. Нечёткий поиск нужен, чтобы искать похожие
+    слова.</p>
+    <p>Вместе с PostgreSQL поставляется расширение для триграммного поиска - <code>pg_trgm</code>.</p>
+    <p>Триграммный поиск хорошо подходит для поиска названия фильмов:</p>
+    <pre ><code class="sql">CREATE EXTENSION pg_trgm;
+
+SELECT * FROM movies WHERE title % 'roben good adventures';
+-- Adventures of Robin Hood, The (1938)
+    </code></pre>
+</section>
+
+<section class="slide">
+    <h2>Воронка поисковой системы</h2>
+    <img src="search.svg" style="width: 100%" />
+</section>
+
+<section class="slide">
+    <h2>Хранение больших атрибутов</h2>
+    <p>Размер страницы ограничен 8 КиБ, а один кортеж не может выходить за рамки страницы, поэтому
+    непосредственно хранить большой текст невозможно.
+    </p>
+    <p>В PostgreSQL существует The Oversized-Attribute Storage Technique (TOAST) - методика
+    хранения больших атрибутов.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Хранение больших атрибутов</h2>
+    <p>Настройка режима TOAST для колонки:</p>
+    <pre><code class="sql">ALTER TABLE name ALTER COLUMN name SET STORAGE {
+    PLAIN    -- Нет сжатия,  нет внешнего хранения
+  | EXTENDED -- Есть сжатие, есть внешнее хранение
+  | EXTERNAL -- Нет сжатия,  есть внешнее хранение
+  | MAIN     -- Есть сжатие, нет внешнего хранения
+}
+    </code></pre>
+    <p>Внешнее хранение допускает размер до 1 ГиБ.</p>
 </section>
 
 <section class="slide">

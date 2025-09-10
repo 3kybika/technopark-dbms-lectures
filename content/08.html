@@ -55,6 +55,18 @@ description: |
 </section>
 
 <section class="slide">
+    <h2>Надёжность СУБД</h2>
+    <h3>Остановка сервера СУБД</h3>
+    <p>В PostgreSQL ведётся транзакционный журнал. После внезапного выключения питания
+    СУБД восстановит данные по журналу и откатит незафиксированные транзакции.
+    </p>
+    <h3>Повреждение файловой системы или носителя</h3>
+    <p>В этом случае невозможно восстановить данные; единственный вариант - восстановление
+    из резервной копии.
+    </p>
+</section>
+
+<section class="slide">
     <h2>Резервное копирование: Зачем?</h2>
     <img src="backup.png" style="float: right; height: 430px; border: 1px solid black"/>
     <ul>
@@ -254,9 +266,9 @@ pg_restore -d movielens -Fd dumpdir</code></pre>
     <pre><code># include files ending in '.conf' from
 include_dir = 'conf.d'</code></pre>
     <p>Специфические настройки при этом хранить в директории <code>conf.d</code>.</p>
-    <p>Если один параметр указан несколько раз - то побеждает последний.</p>  
+    <p>Если один параметр указан несколько раз - то побеждает последний.</p>
     <p><a href="https://postgresqlco.nf/ru/doc/param/">https://postgresqlco.nf/ru/doc/param/</a>
-    </p>   
+    </p>
     <footer>
         <a href="https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server">https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server</a>
     </footer>
