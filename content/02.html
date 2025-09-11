@@ -877,6 +877,29 @@ description: |
 </section>
 
 <section class="slide">
+    <h2>Определения реляционной алгебры</h2>
+    <p><dfn>Детерминант функциональной зависимости</dfn> - набор атрибутов, который находится
+        слева от стрелки в записи функциональной зависимости.
+    </p>
+    <p><dfn>Тривиальная зависимость</dfn> - зависимость, в которой правая часть является подмножеством детерминанта.</p>
+    <p>Функциональная зависимость называется <dfn>неприводимой слева</dfn>, если из детерминанта невозможно убрать
+        ни один атрибут, сохранив функциональную зависимость.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Транзитивность</h2>
+    <p class="next">
+        Функциональная зависимость <code>A -> B</code> является <dfn>транзитивной</dfn>, если существует такое
+        множество атрибутов <code>C</code>, что для него справедливы нетривиальные
+        функциональные зависимости <code>A -> C</code> и <code>C -> B</code>, при этом отсутствует
+        функциональная зависимость <code>C -> A</code>.
+    </p>
+    <p><strong>В реляционной алгебре транзитивность отличается от транзитивности в других разделах.</strong>
+    Обязательность отсутствия зависимости <code>C -> A</code> не присуща другим разделам.</p>
+</section>
+
+<section class="slide">
     <h2>3-я нормальная форма</h2>
     <p><strong>Другими простыми словами:</strong> не должно быть функциональных зависимостей среди неключевых атрибутов.</p>
     <p class="next">Чтобы этого добиться выделяем транзитивные зависимости в отдельные отношения</p>
@@ -979,18 +1002,6 @@ description: |
         </table>
     </div>
 </section>
-<!--
-
-<section class="slide">
-    <h2>Нормальная форма Бойса — Кодда (НБКФ)</h2>
-    <p style="font-size: 80%">Переменная отношения находится в BCNF тогда и только тогда, когда каждая её нетривиальная
-        и неприводимая слева функциональная зависимость имеет в качестве своего детерминанта некоторый потенциальный
-        ключ.
-    </p>
-    <p style="font-size: 80%">Менее формально, переменная отношения находится в нормальной форме Бойса — Кодда тогда и
-        только тогда, когда детерминанты всех её функциональных зависимостей являются потенциальными ключами.
-    </p>
-</section>
 
 <section class="slide">
     <h2>Нормальная форма Бойса — Кодда (НФБК)</h2>
@@ -998,8 +1009,8 @@ description: |
         <dt>Формальное определение:</dt>
         <dd>
             Переменная отношения находится в BCNF тогда и только тогда, когда каждая её нетривиальная
-            и неприводимая слева функциональная зависимость имеет в качестве своего детерминанта некоторый потенциальный
-            ключ.
+            и неприводимая слева функциональная зависимость имеет в качестве своего детерминанта некоторый 
+            потенциальный ключ.
         </dd>
     </dl>
     <dl>
@@ -1010,7 +1021,168 @@ description: |
         </dd>
     </dl>
 </section>
--->
+
+<section class="slide">
+    <h2>Нормальная форма Бойса — Кодда (НФБК)</h2>
+    <dl>
+        Определение 3НФ не совсем подходит для следующих отношений: 
+        <ul>
+            <li>Отношение имеет два или более потенциальных ключа; </li>
+            <li>два и более потенциальных ключа являются составными; </li>
+            <li>они пересекаются, т.е. имеют хотя бы один общий атрибут. </li>
+        </ul>
+
+    </dl>
+</section>
+
+<section class="slide">
+    <h2>Нормальная форма Бойса — Кодда (НФБК)</h2>
+        <p>
+            Для отношений, имеющих один потенциальный ключ (первичный), НФБК является 3НФ. Отношение находится в 
+            НФБК тогда и только тогда, когда она находится в третьей нормальной форме, и при этом не только любой 
+            неключевой атрибут полностью функционально зависит от любого ключа, но и любой ключевой атрибут должен 
+            полностью функционально зависеть от любого ключа. 
+        </p>
+        <p>
+            Таким образом, требование о фактической зависимости неключевых атрибутов от всего ключа целиком и <strong>Jни 
+            от чего другого, кроме как от ключа</strong>, распространяется и на ключевые атрибуты.
+        </p>
+</section>
+
+
+<section class="slide">
+    <h2>Нормальная форма Бойса — Кодда (НФБК), Пример</h2>
+    <div style="display: table-cell; padding-right: 40px">
+    <table class="classic bordered" style="font-size: 60%">
+        <thead>
+            <tr>
+                <th>Номер поставщика PNUM</th>
+                <th>Наименование поставщика PNAME</th>
+                <th>Номер детали DNUM</th>
+                <th>Поставляемое количество VOLUME</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Фирма 1</td>
+                <td>1</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Фирма 1</td>
+                <td>2</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Фирма 1</td>
+                <td>3</td>
+                <td>300</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Фирма 2</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Фирма 2</td>
+                <td>2</td>
+                <td>250</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Фирма 3</td>
+                <td>3</td>
+                <td>1000</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <p>Отношение имеет два потенциальных ключа - {PNUM, DNUM} и {PNAME, DNUM}. </p>
+    <ul>
+        <li><code>PNUM -> PNAME</code> - наименование поставщика зависит от номера поставщика. </li>
+        <li><code>PNAME -> PNUM</code> - номер поставщика зависит от наименования поставщика. </li>
+        <li><code>{PNUM, DNUM} -> VOLUME</code> - поставляемое количество зависит от первого ключа. </li>
+        <li><code>{PNUM, DNUM} -> PNAME</code> - наименование поставщика зависит от первого ключа. </li>
+        <li><code>{PNAME, DNUM} -> VOLUME</code> - поставляемое количество зависит от второго ключа. </li>
+        <li><code>{PNAME, DNUM} -> PNUM</code> - номер поставщика зависит от второго ключ.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Нормальная форма Бойса — Кодда (НФБК), Пример</h2>
+    <div style="display: table-cell; padding-right: 40px">
+        <table>
+        <thead>
+            <tr>
+                <th>Номер поставщика PNUM</th>
+                <th>Наименование поставщика PNAME</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Фирма 1</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Фирма 2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Фирма 3</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <div style="display: table-cell; padding-right: 40px">
+        <table>
+        <thead>
+            <tr>
+                <th>Номер поставщика PNUM</th>
+                <th>Номер детали DNUM</th>
+                <th>Поставляемое количество VOLUME</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>3</td>
+                <td>300</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>250</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>3</td>
+                <td>1000</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+</section>
 
 <section class="slide">
     <h2>Нормальные формы. Подытожим.</h2>
@@ -1059,6 +1231,18 @@ description: |
 </section>
 
 <section class="slide">
+    <h2>Нормальные формы. Подытожим.</h2>
+        <dl>
+        <dt>Мнемоническое правило:</dt>
+        <dd>
+            <p>Каждый атрибут атомарен (1НФ) и зависит...</p>
+            <p>... от ключа (2НФ)</p>
+            <p>... только от ключа (3НФ)</p>
+            <p>... и ни от чего кроме ключа (НФБК).</p>
+        </dd>
+    </dl>
+</section>
+<section class="slide">
     <h2>Виды связей между отношениями</h2>
     <ul>
         <li style="clear: both"><img src="relation-11.svg" style="float: right"/>один-к-одному (1:1)</li>
@@ -1068,106 +1252,6 @@ description: |
     </ul>
 </section>
 
-<section class="slide">
-    <h2>CREATE TABLE</h2>
-    <pre style="font-size: 70%"><code class="sql">CREATE [ { TEMPORARY } | UNLOGGED ] TABLE [ IF NOT EXISTS ] table_name ( [
-  { column_name data_type [ COLLATE collation ] [ column_constraint [ ... ] ]
-    | table_constraint
-    | LIKE source_table [ like_option ... ] }
-    [, ... ]
-] )
-[ INHERITS ( parent_table [, ... ] ) ]
-[ WITH ( storage_parameter [= value] [, ... ] ) | WITH OIDS | WITHOUT OIDS ]
-[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
-[ TABLESPACE tablespace_name ]
-</code></pre>
-    <p>Or:</p>
-    <pre style="font-size: 70%"><code class="sql">CREATE [ { TEMPORARY | TEMP } | UNLOGGED ] TABLE [ IF NOT EXISTS ] table_name
-    OF type_name [ (
-  { column_name WITH OPTIONS [ column_constraint [ ... ] ]
-    | table_constraint }
-    [, ... ]
-) ]
-[ WITH ( storage_parameter [= value] [, ... ] ) | WITH OIDS | WITHOUT OIDS ]
-[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
-[ TABLESPACE tablespace_name ]
-</code></pre>
-</section>
-
-<section class="slide">
-    <h2>CREATE TABLE</h2>
-    <h3>column_constraint:</h3>
-    <pre><code style="font-size: 70%" class="sql">[ CONSTRAINT constraint_name ]
-{ NOT NULL |
-  NULL |
-  DEFAULT default_expr |
-
-  CHECK ( expression ) [ NO INHERIT ] |
-  UNIQUE index_parameters |
-  PRIMARY KEY index_parameters |
-  REFERENCES reftable [ ( refcolumn ) ]
-    [ MATCH FULL | <del>MATCH PARTIAL</del> | MATCH SIMPLE ]
-    [ ON DELETE action ] [ ON UPDATE action ] }
-[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
-</code></pre>
-</section>
-
-<section class="slide">
-    <h2>CREATE TABLE</h2>
-    <h3>table_constraint:</h3>
-    <pre><code style="font-size: 70%" class="sql">[ CONSTRAINT constraint_name ]
-{ CHECK ( expression ) [ NO INHERIT ] |
-  UNIQUE ( column_name [, ... ] ) index_parameters |
-  PRIMARY KEY ( column_name [, ... ] ) index_parameters |
-  FOREIGN KEY ( column_name [, ... ] )
-    REFERENCES reftable [ ( refcolumn [, ... ] ) ]
-    [ MATCH FULL | <del>MATCH PARTIAL</del> | MATCH SIMPLE ]
-    [ ON DELETE action ] [ ON UPDATE action ] }
-  EXCLUDE [ USING index_method ] ( exclude_element WITH operator [, ... ] )
-    index_parameters [ WHERE ( predicate ) ] |
-[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
-</code></pre>
-</section>
-
-<section class="slide">
-    <h2>Обновление кортежа в родительском отношении (action)</h2>
-    <img src="cascade.jpg" style="float: right"/>
-    <dl>
-        <dt>NO ACTION</dt>
-        <dd>Не разрешать изменение</dd>
-
-        <dt>RESTRICT</dt>
-        <dd>То же, что и NO ACTION, но всегда IMMEDIATE</dd>
-
-        <dt>CASCADE</dt>
-        <dd>Изменить каскадно</dd>
-
-        <dt>SET NULL</dt>
-        <dd>Установить в NULL</dd>
-
-        <dt>SET DEFAULT</dt>
-        <dd>Установить значение по умолчанию</dd>
-    </dl>
-</section>
-
-<section class="slide">
-    <h2>CREATE TABLE (пример)</h2>
-    <pre style="font-size: 90%"><code class="sql">CREATE TABLE films (
-    code        char(5) CONSTRAINT firstkey PRIMARY KEY,
-    title       varchar(40) NOT NULL,
-    date_prod   date,
-    kind        varchar(10),
-    len         interval hour to minute,
-    imdb        varchar(20) NULL,
-    CONSTRAINT uniq_imdb UNIQUE(imdb)
-);
-
-CREATE TABLE distributors (
-     did    integer PRIMARY KEY DEFAULT nextval('serial'),
-     name   varchar(40) NOT NULL CHECK (name &lt;&gt; '')
-);
-</code></pre>
-</section>
 
 <section class="slide">
     <h2>Типы данных PostgreSQL</h2>
@@ -1389,6 +1473,107 @@ CREATE TABLE distributors (
     <p>Время хранится с точностью до микросекунд.</p>
     <p>P - кол-во цифр для хранения дробной части секунд.</p>
     <p class="next">WITH TIMEZONE - внутри базы хранится UTC.</p>
+</section>
+
+<section class="slide">
+    <h2>CREATE TABLE</h2>
+    <pre style="font-size: 70%"><code class="sql">CREATE [ { TEMPORARY } | UNLOGGED ] TABLE [ IF NOT EXISTS ] table_name ( [
+  { column_name data_type [ COLLATE collation ] [ column_constraint [ ... ] ]
+    | table_constraint
+    | LIKE source_table [ like_option ... ] }
+    [, ... ]
+] )
+[ INHERITS ( parent_table [, ... ] ) ]
+[ WITH ( storage_parameter [= value] [, ... ] ) | WITH OIDS | WITHOUT OIDS ]
+[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
+[ TABLESPACE tablespace_name ]
+</code></pre>
+    <p>Or:</p>
+    <pre style="font-size: 70%"><code class="sql">CREATE [ { TEMPORARY | TEMP } | UNLOGGED ] TABLE [ IF NOT EXISTS ] table_name
+    OF type_name [ (
+  { column_name WITH OPTIONS [ column_constraint [ ... ] ]
+    | table_constraint }
+    [, ... ]
+) ]
+[ WITH ( storage_parameter [= value] [, ... ] ) | WITH OIDS | WITHOUT OIDS ]
+[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
+[ TABLESPACE tablespace_name ]
+</code></pre>
+</section>
+
+<section class="slide">
+    <h2>CREATE TABLE</h2>
+    <h3>column_constraint:</h3>
+    <pre><code style="font-size: 70%" class="sql">[ CONSTRAINT constraint_name ]
+{ NOT NULL |
+  NULL |
+  DEFAULT default_expr |
+
+  CHECK ( expression ) [ NO INHERIT ] |
+  UNIQUE index_parameters |
+  PRIMARY KEY index_parameters |
+  REFERENCES reftable [ ( refcolumn ) ]
+    [ MATCH FULL | <del>MATCH PARTIAL</del> | MATCH SIMPLE ]
+    [ ON DELETE action ] [ ON UPDATE action ] }
+[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+</code></pre>
+</section>
+
+<section class="slide">
+    <h2>CREATE TABLE</h2>
+    <h3>table_constraint:</h3>
+    <pre><code style="font-size: 70%" class="sql">[ CONSTRAINT constraint_name ]
+{ CHECK ( expression ) [ NO INHERIT ] |
+  UNIQUE ( column_name [, ... ] ) index_parameters |
+  PRIMARY KEY ( column_name [, ... ] ) index_parameters |
+  FOREIGN KEY ( column_name [, ... ] )
+    REFERENCES reftable [ ( refcolumn [, ... ] ) ]
+    [ MATCH FULL | <del>MATCH PARTIAL</del> | MATCH SIMPLE ]
+    [ ON DELETE action ] [ ON UPDATE action ] }
+  EXCLUDE [ USING index_method ] ( exclude_element WITH operator [, ... ] )
+    index_parameters [ WHERE ( predicate ) ] |
+[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+</code></pre>
+</section>
+
+<section class="slide">
+    <h2>Обновление кортежа в родительском отношении (action)</h2>
+    <img src="cascade.jpg" style="float: right"/>
+    <dl>
+        <dt>NO ACTION</dt>
+        <dd>Не разрешать изменение</dd>
+
+        <dt>RESTRICT</dt>
+        <dd>То же, что и NO ACTION, но всегда IMMEDIATE</dd>
+
+        <dt>CASCADE</dt>
+        <dd>Изменить каскадно</dd>
+
+        <dt>SET NULL</dt>
+        <dd>Установить в NULL</dd>
+
+        <dt>SET DEFAULT</dt>
+        <dd>Установить значение по умолчанию</dd>
+    </dl>
+</section>
+
+<section class="slide">
+    <h2>CREATE TABLE (пример)</h2>
+    <pre style="font-size: 90%"><code class="sql">CREATE TABLE films (
+    code        char(5) CONSTRAINT firstkey PRIMARY KEY,
+    title       varchar(40) NOT NULL,
+    date_prod   date,
+    kind        varchar(10),
+    len         interval hour to minute,
+    imdb        varchar(20) NULL,
+    CONSTRAINT uniq_imdb UNIQUE(imdb)
+);
+
+CREATE TABLE distributors (
+     did    integer PRIMARY KEY DEFAULT nextval('serial'),
+     name   varchar(40) NOT NULL CHECK (name &lt;&gt; '')
+);
+</code></pre>
 </section>
 
 <section class="slide">
