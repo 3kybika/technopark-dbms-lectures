@@ -335,11 +335,11 @@ description: |
 
 <section class="slide">
     <h2>Особенности выборки данных</h2>
-    <p>By default, ResultSets are completely retrieved and stored in memory. In most cases this is the most efficient
-        way to operate and, due to the design of the MySQL network protocol, is easier to implement. If you are working
-        with ResultSets that have a large number of rows or large values and cannot allocate heap space in your JVM for
-        the memory required, you can tell the driver to stream the results back one row at a time.</p>
-    <p>To enable this functionality, create a Statement instance in the following manner:</p>
+    <p>По умолчанию резьтаты полностью извлекаются и сохраняются в памяти. В большинстве случаев это наиболее эффективный
+        способ работы и, благодаря архитектуре MySQL, это проще в реализации. Если вы работаете
+        с наборами результатов, которые имеют большое количество строк и не могут выделить пространство в heap вашей JVM,
+        Можно указать драйверу передавать результаты обратно по одной строке за раз.</p>
+    <p>Для включения этого функционала нужно создать экземпляр Statement следующим образом:</p>
     <pre><code class="java">stmt = conn.createStatement(
     java.sql.ResultSet.TYPE_FORWARD_ONLY,
     java.sql.ResultSet.CONCUR_READ_ONLY);
